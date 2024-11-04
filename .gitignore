@@ -258,5 +258,5 @@ poetry.toml
 
 # LSP config files
 pyrightconfig.json
-
+.idea
 # End of https://www.toptal.com/developers/gitignore/api/python,flask
