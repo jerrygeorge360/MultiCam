@@ -1,0 +1,20 @@
+<footer>
+    <div class="footer-container">
+        {% for section in footer_data.sections %}
+        <div class="footer-item">
+            <h3>{{ section.category }}</h3>
+            <ul>
+                {% for item in section.item %}
+                   <li>
+                     {% if item.link %}
+                        <a href="{{ item.link }}">{{ item.label }}</a>
+                     {% else %}
+                        <span aria-hidden="true">{{ item.label }}</span>
+                     {% endif %}
+                   </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+</footer>

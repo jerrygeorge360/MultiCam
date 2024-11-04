@@ -1,0 +1,51 @@
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent;
+    box-shadow: 1px 1px 10px $primary_shadow;
+    border-radius: 1em;
+    padding: 1em 2em;
+    width: 100%;
+    margin: 2em auto;
+    
+
+    .navbar-brand {
+        border: 1px solid gray;
+        text-align: center;
+        border-radius: 2em;
+        font-size: 1.5em;
+        color: $text_primary;
+        font-weight: bold;
+        width: 12%;
+        height: 3em;
+        overflow: clip;
+        &>img{
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .navbar-elements-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 75%;
+        flex-wrap: wrap;
+        .navbar-element {
+            font-size: 1em;
+            color: $text_secondary;
+            margin: 0 1em;
+            padding: 0.5em 1em;
+            border-radius: 0.5em;
+            transition: all 0.3s ease;
+
+            &:hover {
+                color: $text_primary;
+                background-color: $highlight_color;
+                box-shadow: inset 3px 3px 6px $primary_shadow, inset -3px -3px 6px $secondary_shadow;
+            }
+        }
+    }
+}

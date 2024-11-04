@@ -1,0 +1,46 @@
+// Mixin for badge styles with flexible font size and padding
+@mixin badge($bgColor, $textColor, $fontSize: 0.7em, $padding: 0.4em 1em, $borderRadius: 12px) {
+    position: absolute;
+    top: 10%;
+    left: 80%;
+    background-color: $bgColor;
+    color: $textColor;
+    padding: $padding;
+    font-size: $fontSize;
+    border-radius: $borderRadius;
+    box-shadow: 2px 3px 0 1px $primary_shadow,
+                -2px -2px 6px $secondary_shadow;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+    // Hover effect for the badge
+    &:hover {
+        background-color: adjust-color($bgColor, $lightness: 5%);
+        box-shadow: inset 2px 3px 0 1px $primary_shadow,
+                    inset -2px -2px 6px $secondary_shadow;
+    }
+}
+
+// Badge variants with background and text colors
+$badge-variants: (
+    "success": ($accent_color2, $text_primary),
+    "error": ($accent_color1, $text_primary),
+    "info": ($accent_color3, $text_primary)
+);
+
+// Generate badge classes based on variants
+@each $variant, $colors in $badge-variants {
+    .badge-#{$variant}
+
+ {
+        @include badge(
+            nth($colors, 1), // Background color
+            nth($colors, 2), // Text color
+            0.8em,           // Font size (flexible)
+            0.5em 1.2em,     // Padding (flexible)
+            12px             // Border radius
+        );
+    }
+}
+
+
+

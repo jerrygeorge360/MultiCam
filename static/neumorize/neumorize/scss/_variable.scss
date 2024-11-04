@@ -1,0 +1,45 @@
+$background-color:#14161A;//charcoal
+$accent_color1: #39C0ED;
+$accent_color2: #4cd69b;//Neon Green
+$accent_color3: #57c7ff;//Light Blue
+$text_primary: #EAEAEA;
+$text_secondary:#8F9AA3;
+$primary_shadow:#0C0C0C;
+$secondary_shadow:#3A3A3A;
+$highlight_color:#4A4A4A;
+$button_color_background:#2B303B;
+$button_hover_color:#3E4855;
+$component_color:linear-gradient(to right, $background-color, $primary_shadow);
+$metallic_color:linear-gradient(135deg, 
+#b8b8b8, /* Light metallic gray */
+#d1d1d1, /* Slightly lighter gray for shine */
+#f5f5f5, /* Almost white for highlight */
+#a0a0a0, /* Darker gray for depth */
+#f5f5f5, /* Reflective light again */
+#d1d1d1, /* Return to lighter metallic gray */
+#b8b8b8 /* Finish with original metallic gray */
+);
+
+:root {
+    --background-color: #{$background_color};
+    --primary-shadow: #{$primary_shadow};
+    --secondary-shadow: #{$secondary_shadow};
+    --highlight-color: #{$highlight_color};
+    --accent-color1: #{$accent_color1};
+    --accent-color2: #{$accent_color2};
+    --accent-color3: #{$accent_color3};
+    --text-primary: #{$text_primary};
+    --text-secondary: #{$text_secondary};
+    --component-color: #{$component_color};
+    --metallic-color: #{$metallic_color};
+  }
+
+// font sizes
+$base_font_size: 1.5em;
+$font_size_sm: $base_font_size * 0.75;
+$font_size_lg: $base_font_size * 1.5;
+$font_size_xl: $base_font_size * 2;
+$font_size_xxl: $base_font_size * 3;
+
+//paddingcard
+$container_padding: 1em;

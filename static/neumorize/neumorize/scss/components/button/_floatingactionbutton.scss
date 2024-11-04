@@ -1,0 +1,22 @@
+@mixin base-button($color, $size, $border-radius, $pointer) {
+    @include buttoncontainer($color, $size, $size, $border-radius, 100%, $pointer, "true");
+    @include buttonshadow;
+    @include buttonTextIcon($text_primary, $font_size_sm, $text_primary, $font_size_sm);
+}
+
+$button-variants: (
+    "action": $accent_color2,
+    "neu": $highlight_color,
+    "mod": $accent_color3,
+    "close": $accent_color1
+);
+
+@each $variant, $color in $button-variants {
+    .fab-#{$variant}-button-container {
+        @include base-button($color, 3em, 0.3em, pointer);
+
+        &:hover {
+            background-color: adjust-color($color, $lightness: 30%);
+        }
+    }
+}

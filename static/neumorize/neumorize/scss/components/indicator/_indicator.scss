@@ -1,0 +1,44 @@
+$background-color: #1e1e1e; // Background color
+$primary-shadow: #0c0c0c; // Primary shadow
+$secondary-shadow: #3a3a3a; // Secondary shadow
+$active-color: #5af78e; // Active color
+$inactive-color: #ff5c57; // Inactive color
+$text-color: #f8f8f2; 
+
+.indicator-container {
+    width: 100%; /* Full width */
+    display: flex; /* Flexbox for alignment */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    margin: 1em 0; /* Margin for spacing */
+}
+
+.indicator {
+    width: 30px; /* Width of the indicator */
+    height: 30px; /* Height of the indicator */
+    border-radius: 50%; /* Make it circular */
+    background-color: $inactive-color; /* Initial inactive color */
+    box-shadow: 5px 5px 10px $primary-shadow, -5px -5px 10px $secondary-shadow; /* Neumorphism effect */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+}
+
+.indicator-status {
+    margin-left: 1em; /* Space between indicator and text */
+    color: $text-color; /* Text color */
+}
+
+.indicator-button {
+    background-color: $active-color; /* Button background */
+    color: $text-color; /* Button text color */
+    border: none; /* Remove default border */
+    padding: 0.5em 1em; /* Padding */
+    border-radius: 0.5em; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    box-shadow: 3px 3px 6px $primary-shadow, -3px -3px 10px $secondary-shadow; /* Neumorphism effect */
+    transition: all 0.3s ease; /* Smooth transition */
+
+    &:hover {
+        background-color: adjust-color($color: $active-color,$lightness: 10%);/* Lighten on hover */
+        box-shadow: inset 3px 3px 6px $primary-shadow, inset -3px -3px 6px $secondary-shadow; /* Inset shadow */
+    }
+}

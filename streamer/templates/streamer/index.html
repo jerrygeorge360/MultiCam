@@ -1,0 +1,343 @@
+{%extends 'base.html'%}
+{% block stylesheet %}
+    <link rel="stylesheet" href="../static/stylesheet/streamer.css">
+{% endblock %}
+
+{% block title %}{{ 'Settings' }}{% endblock %}
+
+{% block content %}
+<div class="streamer-settings-con">
+    <div class="column1">
+        <div class="profile-con">
+{#            Profile #}
+            <section class="card-profile">
+                {% include "profile.html" %}
+            </section>
+{#            options #}
+            <hr>
+            <section class="settings-options">
+                {% for i in range(1) %}
+                 <a class="ghost-button-container" href="" style="text-decoration: none" >
+                    <div class="button-text-icon-container">
+                       <div class="avater"><img style="width: 100%"  src="static/assets/header/logo/data.png"></div>
+                        <div class="button-text" ><p>camera</p></div>
+
+                    </div>
+                </a>
+
+{% endfor %}
+
+            </section>
+        </div>
+
+    </div>
+
+    <div class="column2">
+    <div class="camera-con" id="camera-con">
+
+    </div>
+
+    <div class="fab-neu-button-container" id="toggle-stream-modal">
+<div class="button-text-icon-container">
+<div class="button-text">
+    <img src="static/assets/streamer/plus.png" width="100%" height="100%" alt="">
+</div>
+</div>
+</div>
+
+
+     <form class="form-container hide" id="signupID" style="width: 30%">
+        <div class="form-group">
+            <label for="options">Cam angles:</label>
+            <select name="options" id="camAngles" style="color: gray">
+                {% for i in  camera_angles %}
+                <option value="{{ i }}" >{{ i }}</option>
+                {% endfor %}
+
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="email">Media Server Config</label>
+            <input type="text" id="camLabel"  required placeholder="Label of Stream"></div>
+        <button type="" class="form-button" id="add-card">Add</button>
+    </form>
+
+
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
+
+{% block script %}
+    <script>
+
+    let count;
+    const toggleModal = document.getElementById('toggle-stream-modal');
+    const modal = document.getElementById('signupID');
+    const addCard = document.getElementById('add-card');
+    const cameraCon = document.getElementById('camera-con');
+    const camValue =document.getElementById('camAngles');
+    const camName =document.getElementById('camLabel');
+    let camData;
+    const LocalStorageUtil = {
+    // Save an item to local storage
+    setItem: function(key, value) {
+        try {
+            // Convert the value to a JSON string before storing it
+            const jsonValue = JSON.stringify(value);
+            localStorage.setItem(key, jsonValue);
+            console.log(`Saved ${key} to local storage.`);
+        } catch (error) {
+            console.error(`Error saving ${key} to local storage:`, error);
+        }
+    },
+
+    // Get an item from local storage
+    getItem: function(key) {
+        try {
+            const jsonValue = localStorage.getItem(key);
+            if (jsonValue !== null) {
+                // Parse the JSON string back to a JavaScript object
+                const value = JSON.parse(jsonValue);
+                console.log(`Retrieved ${key} from local storage.`);
+                return value;
+            }
+            console.log(`${key} not found in local storage.`);
+            return null;
+        } catch (error) {
+            console.error(`Error retrieving ${key} from local storage:`, error);
+            return null;
+        }
+    },
+
+    // Remove an item from local storage
+    removeItem: function(key) {
+        try {
+            localStorage.removeItem(key);
+            console.log(`Removed ${key} from local storage.`);
+        } catch (error) {
+            console.error(`Error removing ${key} from local storage:`, error);
+        }
+    },
+
+    // Clear all items from local storage
+    clearAll: function() {
+        try {
+            localStorage.clear();
+            console.log('Cleared all items from local storage.');
+        } catch (error) {
+            console.error('Error clearing local storage:', error);
+        }
+    }
+};
+    function addUser(cards) {
+    const currentUsers = LocalStorageUtil.getItem('cards') || []; // Retrieve the current list of users
+    currentUsers.push(cards); // Append the new user to the list
+    LocalStorageUtil.setItem('cards', currentUsers); // Save the updated list back to local storage
+}
+    function removeUserById(cardId) {
+    const currentUsers = LocalStorageUtil.getItem('cards') || []; // Retrieve the current list of users
+    const updatedUsers = currentUsers.filter(card => card.id !== cardId); // Filter out the user with the specified ID
+    LocalStorageUtil.setItem('cards', updatedUsers); // Save the updated list back to local storage
+}
+
+    toggleModal.addEventListener('click',(e)=>{
+        e.stopPropagation();
+        modal.classList.toggle('hide')
+    });
+    addCard.addEventListener(('click'),(e)=>{
+        e.preventDefault();
+        if(camName.value){
+                camData = {camAngle:camValue.value,camLabel:camName.value}
+                stream(camData);
+        }
+
+    })
+
+    modal.addEventListener('click', (e) => {
+    e.stopPropagation();
+    });
+
+
+    async function stream(camData) {
+
+            const base_url = 'http://localhost:5000/';
+            const headers = {'Accept': 'application/json', 'Content-Type': 'application/json'};
+            try {
+                let fetchObj = await fetch(base_url + 'initialize_stream', {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify({camAngle:camData.camAngle,camLabel:camData.camLabel})
+                {# TODO: put this in the database   #}
+                });
+                if (fetchObj.ok) {
+                    const resp = await fetchObj.json();
+                    const cred = resp
+                    console.log(typeof (cred))
+                    console.log(cred);
+                    const stream_id = cred.stream_id;
+                    const credLabel = ['stream name','username','password']
+                    const credData =[cred.stream_name,cred.username,cred.password];
+                    count = cred.object_id;
+                    console.log(credData);
+                    cameraCon.innerHTML += `
+                    {#<div style="width:80%;text-align:center"><p>d</p><div>#}
+        <section class="settings-section" style="position:relative" data-streamid=${stream_id} data-id=${count}>
+             <div class="badge-error" style="left:90%!important" id="status-badge${count}"></div>
+            <div class="" style="width: 80%;height:100%;display: flex;flex-direction: column;justify-content:space-around;">
+                {% for i in range(3) %}
+                <div class="form-group campara">
+                   <label for="" style="font-size:10px;color:gray">${credLabel[{{ i }}]}</label>
+                <input type="text" id="name" data-value="${credData[{{ i }}]}" value="${credData[{{ i }}]}" disabled style="color:gray" >
+                </div>
+                 {% endfor %}
+                 <div class="form-group campara">
+                   <label for="" style="font-size:10px;color:gray">cam angle</label>
+                <input type="text" id="name" data-value="${cred.cam_angle}" value="${cred.cam_angle}" disabled style="color:gray" >
+                </div>
+                  <div class="form-group campara">
+                   <label for="" style="font-size:10px;color:gray">cam name</label>
+                <input type="text" id="name" data-value="${cred.cam_label}" value="${cred.cam_label}" disabled style="color:gray" >
+                </div>
+
+            </div>
+            <div class="remove-icon-con" style="width: 20%">
+
+                  <div class="trash-con">
+                    <img src="static/assets/streamer/active-listening.png" class='img-listen' width="100%" height="100%" alt="">
+                </div>
+                <div class="trash-con" style="margin-left:10px;">
+                    <img src="static/assets/streamer/trash.png" class='img-trash' width="100%" height="100%" alt="">
+                </div>
+
+            </div>
+        </section>`
+
+
+
+
+                } else {
+                    console.error('Error with status code ' + fetchObj.status);
+                }
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+    async function deleteStream(dataId) {
+            const base_url = 'http://localhost:5000/';
+            const headers = {'Accept': 'application/json', 'Content-Type': 'application/json'};
+            try {
+                let fetchObj = await fetch(base_url + 'delete_instance', {
+                    method: 'DELETE',
+                    headers: headers,
+                    body: JSON.stringify({objectId: dataId})
+                });
+                if (fetchObj.ok) {
+                    const resp = await fetchObj.json();
+                    const cred = resp
+                    console.log(typeof (cred))
+                    console.log(cred);
+
+
+                } else {
+                    console.error('Error with status code ' + fetchObj.status);
+                }
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+     async function getEmbedCode(dataId) {
+            const base_url = 'http://localhost:5000/';
+            const headers = {'Accept': 'application/json', 'Content-Type': 'application/json'};
+            try {
+                let fetchObj = await fetch(base_url + 'embed_code', {
+                    method: 'GET',
+                    headers: headers,
+                    body: JSON.stringify({objectId: dataId})
+                });
+                if (fetchObj.ok) {
+                    const resp = await fetchObj.json();
+                    const cred = resp
+                    {#embed the code in whatever page#}
+                    console.log(cred);
+
+                } else {
+                    console.error('Error with status code ' + fetchObj.status);
+                }
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+      async function startTheStream(dataId) {
+            const base_url = 'http://localhost:5000/';
+            const headers = {'Accept': 'application/json', 'Content-Type': 'application/json'};
+            try {
+                let fetchObj = await fetch(base_url + 'listen_to_stream', {
+                    method: 'PUT',
+                    headers: headers,
+                    body: JSON.stringify({objectId: dataId})
+                });
+                if (fetchObj.ok) {
+                    const resp = await fetchObj.json();
+                    const cred = resp
+                    console.log(cred);
+
+                } else {
+                    console.error('Error with status code ' + fetchObj.status);
+                }
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+    cameraCon.addEventListener('click', function(event) {
+    if (event.target.classList.contains('img-trash')) {
+        const section = event.target.closest('.settings-section');
+        deleteStream(section.dataset.id);
+        section.remove();
+    }
+    if (event.target.classList.contains('img-listen')) {
+        const section = event.target.closest('.settings-section');
+        let statusButton;
+        let streamResp = startTheStream(section.dataset.id);
+        if(streamResp){
+            statusButton = section.querySelector(`#status-badge${count}`);
+            statusButton.classList.replace('badge-error','badge-success')
+        }
+
+    }
+});
+
+
+
+
+  document.addEventListener('click', (event) => {
+    if (!modal.classList.contains('hide')) {
+         modal.classList.toggle('hide');
+    }
+});
+
+
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+
+});
+
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,9 @@
+@import "button";
+
+.ghost-button-container{
+        @include buttoncontainer(transparent,5em,2em,0.3em,12px,pointer,"true");
+        @include buttonshadow;
+        @include buttonTextIcon($text_primary,$font_size_sm,$text_primary,$font_size_sm);
+       
+}
+

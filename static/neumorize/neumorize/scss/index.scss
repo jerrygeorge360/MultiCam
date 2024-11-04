@@ -1,0 +1,37 @@
+@import "variable";
+@import "neumorize/scss/breakpoint";
+@import "neumorize/scss/components/cards/productcard";
+@import "neumorize/scss/components/cards/blogcard";
+@import "neumorize/scss/components/button/ctabutton";
+@import "neumorize/scss/components/button/ghostbutton";
+@import "neumorize/scss/components/button/togglebutton";
+@import "neumorize/scss/components/button/filledbutton";
+@import "neumorize/scss/components/button/floatingactionbutton";
+@import "neumorize/scss/components/button/harmburgerbutton";
+@import "neumorize/scss/components/alerts/alerts";
+@import "neumorize/scss/components/badges/badges";
+@import "neumorize/scss/components/navbar/navbar";
+@import "neumorize/scss/components/modal/modal";
+@import "neumorize/scss/components/sidebar/sidebar";
+@import "neumorize/scss/components/pagination/pagination";
+@import "neumorize/scss/components/carousel/carousel";
+@import "neumorize/scss/components/dropdownmenu/dropdownmenu";
+@import "neumorize/scss/components/footer/footer";
+@import "neumorize/scss/components/formelements/formelements";
+@import "neumorize/scss/components/progressbar/progressbar";
+@import "neumorize/scss/components/indicator/indicator";
+@import "neumorize/scss/utilities";
+
+
+
+
+*{
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: $background-color;
+    width: 100%;
+    font-family: "Poppins",sans-serif;;
+}

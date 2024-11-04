@@ -1,0 +1,40 @@
+{
+  "name": "neumorize",
+  "version": "1.0.0",
+  "description": "Neumorize is a sleek UI library that captures the essence of neumorphism with soft shadows and minimalist design. Perfect for dark-themed applications, it empowers developers to create clean, intuitive interfaces effortlessly.",
+  "main": "dist/js",
+  "style": "dist/css",
+  "scripts": {
+    "build": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jerrygeorge360/neumorize"
+  },
+  "keywords": [
+    "sass",
+    "neumorphism",
+    "minimalist",
+    "css",
+    "dark themed"
+  ],
+  "author": "jerry george",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.25.7",
+    "@babel/preset-env": "^7.25.7",
+    "gulp": "^5.0.0",
+    "gulp-autoprefixer": "^9.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-purgecss": "^6.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-uglify": "^3.0.2",
+    "sass": "^1.79.4",
+    "stylelint": "^16.9.0",
+    "stylelint-scss": "^6.7.0"
+  }
+}

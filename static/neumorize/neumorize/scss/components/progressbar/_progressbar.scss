@@ -1,0 +1,39 @@
+$background-color: #1e1e1e; // Background color
+$primary-shadow: #0c0c0c; // Primary shadow
+$secondary-shadow: #3a3a3a; // Secondary shadow
+$highlight-color: #5af78e; // Highlight color
+$text-color: #f8f8f2; // Text color
+
+.progress-bar-container {
+    width: 100%; /* Full width */
+    background-color: $background-color; /* Background */
+    border-radius: 1em; /* Rounded corners */
+    box-shadow: 5px 5px 10px $primary-shadow, -5px -5px 10px $secondary-shadow;
+    padding: 0.5em; /* Padding */
+    margin: 1em 0; /* Margin for spacing */
+}
+
+.progress-bar {
+    height: 20px; /* Height of the progress bar */
+    width: 0%; /* Initial width */
+    background-color: $highlight-color; /* Color of the progress */
+    border-radius: 1em; /* Rounded corners */
+    box-shadow: inset 3px 3px 6px $primary-shadow, inset -3px -3px 6px $secondary-shadow;
+    transition: width 0.3s ease; /* Smooth transition for width change */
+}
+
+.progress-button {
+    background-color: $highlight-color; /* Button background */
+    color: $text-color; /* Button text color */
+    border: none; /* Remove default border */
+    padding: 0.5em 1em; /* Padding */
+    border-radius: 0.5em; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    box-shadow: 3px 3px 6px $primary-shadow, -3px -3px 10px $secondary-shadow;
+    transition: all 0.3s ease; /* Smooth transition */
+
+    &:hover {
+        background-color: adjust-color($color: $highlight-color, $lightness: 10%); /* Lighten on hover */
+        box-shadow: inset 3px 3px 6px $primary-shadow, inset -3px -3px 6px $secondary-shadow; /* Inset shadow */
+    }
+}

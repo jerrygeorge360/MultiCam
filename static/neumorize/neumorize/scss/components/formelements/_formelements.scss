@@ -1,0 +1,83 @@
+$form-background: linear-gradient(to right,#14161a,#0c0c0c);
+$form-shadow: #0c0c0c; // Primary shadow
+$form-secondary-shadow: #3a3a3a; // Secondary shadow
+$form-highlight: #4a4a4a; // Highlight color
+$form-text: #f8f8f2; // Text color
+.form-container {
+    width: 90%; /* Adjust as needed */
+    max-width: 500px; /* Max width for the form */
+    margin: 2em auto; /* Center the form */
+    //background-color: $form-background; /* Form background */
+    background-image:$form-background;
+    border-radius: 1em; /* Rounded corners */
+    padding: 2em; /* Padding around the form */
+    box-shadow: 1px 1px 1px $primary_shadow, -1px -1px 1px $accent_color1;
+    max-height: 80%;
+}
+
+.form-group {
+    margin-bottom: 1.5em; /* Space between form groups */
+}
+
+label {
+    display: block; /* Block display for labels */
+    margin-bottom: 0.5em; /* Space below label */
+    color: $form-text; /* Label color */
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+select,
+textarea {
+    width: 100%; /* Full width */
+    padding: 0.5em; /* Padding inside input */
+    border-radius: 0.5em; /* Rounded corners */
+    border: none; /* Remove default border */
+    background-image: $form-background; /* Match form background */
+    color: $form-text; /* Text color */
+    box-shadow: inset 1px 1px 6px $primary_shadow, inset -1px -1px 1px $accent_color1;
+    transition: all 0.3s ease; /* Smooth transition */
+}
+    //box-shadow: 1px 1px 1px $primary_shadow, -1px -1px 1px $accent_color1;
+
+
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    box-shadow: 0 0 5px $form-highlight; /* Highlight on focus */
+}
+input[type='date']:before{
+    content: "\1F4C5";
+}
+textarea {
+    resize: none; /* Prevent resizing */
+    height: 100px; /* Fixed height for textarea */
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    margin-right: 0.5em; /* Space between input and label */
+}
+
+.form-button {
+    background-color: $form-highlight; /* Button background */
+    color: $form-text; /* Button text color */
+    border: none; /* Remove default border */
+    padding: 0.75em 1.5em; /* Padding */
+    border-radius: 0.5em; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    box-shadow: inset 1px 1px 6px $primary_shadow, inset -1px -1px 1px $accent_color1;
+    transition: all 0.3s ease; /* Smooth transition */
+    
+    &:hover {
+        background-color: adjust-color($color: $form-highlight, $lightness: 10%); /* Lighten on hover */
+        box-shadow: inset 3px 3px 6px $form-shadow, inset -3px -3px 6px $form-secondary-shadow; /* Inset shadow */
+    }
+}

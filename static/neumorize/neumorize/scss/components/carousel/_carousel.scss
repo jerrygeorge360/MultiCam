@@ -1,0 +1,103 @@
+.carousel-container {
+    position: relative;
+    width: 80%;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 1em;
+        box-shadow: 1px 1px 0 1px $primary_shadow,
+     -1px -1px 1px $accent_color1;
+    background-color: $background_color;
+    z-index: 1;
+}
+
+.carousel {
+    display: flex;
+    transition: transform 0.5s ease;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    &>img{
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.carousel-image {
+    min-width: 100%;
+    border-radius: 1em;
+        box-shadow: 1px 1px 0 1px $primary_shadow,
+     -1px -1px 1px $accent_color1;
+    display: none;
+    opacity: 0.6;
+
+}
+.carousel-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #FFFFFF;
+    z-index: 3;
+}
+.carousel-headline {
+    font-size: 5em;
+    margin-bottom: 10px;
+    z-index: 3;
+}
+
+.carousel-text {
+    font-size: 2em;
+    margin-bottom: 20px;
+    z-index: 3;
+}
+
+.carousel-cta {
+    padding: 10px 20px;
+    background-color: #ff5c57;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    z-index: 3;
+}
+
+.carousel-cta:hover {
+    background-color: #e94e4a;
+}
+.carousel-image.active {
+    display: block;
+}
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0.5em 1em;
+    background-color: $background_color;
+    border: none;
+    border-radius: 0.5em;
+    color: $text_primary;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 3px 3px 6px $primary_shadow, -3px -3px 10px $secondary_shadow;
+    z-index: 3;
+
+    &:hover {
+        background-color: $highlight_color;
+        color: $text_primary;
+        box-shadow: inset 3px 3px 6px $primary_shadow, inset -3px -3px 6px $secondary_shadow;
+    }
+}
+
+.prev {
+    left: 10px;
+    display: none;
+}
+
+.next {
+    right: 10px;
+    display: none;
+}

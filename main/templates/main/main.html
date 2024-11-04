@@ -1,0 +1,67 @@
+{%extends 'base.html'%}
+
+{% block title %}{{ 'Home' }}{% endblock %}
+
+{% block content %}
+
+    <div class="carousel-container" style="width: 100%;height: 100vh">
+        <div class="carousel" id="carousel">
+    <!-- Images will be inserted dynamically via JavaScript -->
+       </div>
+    <button class="carousel-button prev" id="prevButton">&lt;</button>
+    <button class="carousel-button next" id="nextButton">&gt;</button>
+</div>
+
+     <section class="section">
+    <div  style="display:flex;width: 100%;flex-wrap: wrap;margin-top: 4em ;padding: 2em" class="welcome">
+
+        <div class="p-2 align-center text-primary " style="flex: 1;padding:10px;text-align: center;border:thin solid gray;width: 100%">
+            <h2 class="font-large " style="color: whitesmoke;font-weight: bold">Stream</h2>
+            <p>Broadcast live with your favorite content creators and dive into their world in real-time!</p>
+        </div>
+        <div class="p-2 align-center text-primary" style="flex: 1;padding:10px;text-align: center;border:thin solid grey;width: 100%">
+            <h2 class="font-large text-primary" style="color: whitesmoke;font-weight: bold">Switch</h2>
+            <p>Take control of your viewing experience by seamlessly switching between multiple camera angles!</p>
+        </div>
+        <div class="p-2 align-center text-primary" style="flex: 1;padding:10px;text-align: center;border:thin solid gray;width: 100%">
+            <h2 class="font-large" style="color: whitesmoke;font-weight: bold">Enjoy</h2>
+            <p>Immerse yourself in the action and enhance your entertainment with a personalized perspective!</p>
+        </div>
+
+    </div>
+
+
+    </section>
+
+     <section class="section">
+
+   <div class="infographic-container">
+       <h2>Onboading</h2>
+       <img src="static/assets/main/Infografix.svg" alt="">
+</div>
+
+
+
+    </section>
+
+
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
+
+{% block script %}
+    <script>
+    const imagesData = [{src: "static/assets/hero/dalle.webp", alt: "",headline:"MultiCam",text:"{{ caption|safe }}",buttonText:"Explore"}]
+    const options = {
+                    containerSelector: '.carousel',
+                    writeOnTop: true,
+                    imagesData: imagesData,
+                    prevButtonSelector: '.prev',
+                    nextButtonSelector: '.next'
+            };
+    let slider = new Carousel(options);
+    console.log(slider.imagesData);
+    </script>
+{% endblock %}

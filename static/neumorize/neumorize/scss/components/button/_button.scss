@@ -1,0 +1,92 @@
+@mixin buttonshadow {
+    box-shadow: 1px 1px 0 1px $primary_shadow,
+     -1px -1px 1px $accent_color1;
+  
+}
+
+
+/* 3px 3px 4px 0px #b8b9be, -3px -3px 6px #fff; */
+@mixin buttonshadowhover {
+    box-shadow: inset 1px 1px 0 1px $primary_shadow,
+     inset -1px -1px 1px $accent_color1;
+  
+}
+
+@mixin buttoncontainer($bgColor,$width,$height,$padding,$borderRadius,$cursorType,$scale){
+    width: $width;
+    height: $height;
+    padding: $padding;
+    background: $bgColor;
+    outline: thin solid rgba($color: $secondary_shadow, $alpha: 30%);
+    border-radius: $borderRadius;
+
+    &:active{
+        @include buttonshadowhover;
+
+    }
+
+    @if($scale == "true"){
+        &:active > div{
+            transform: scale(0.5);
+        }
+
+    }
+
+    
+    &:hover{
+        cursor:$cursorType;
+    }
+}
+
+@mixin buttonTextIcon($textColor,$textSize,$iconColor,$iconSize){
+    .button-text-icon-container{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+
+        .button-text{
+            color: $textColor;
+            font-size: $textSize;
+            user-select: none; /* Prevent text selection */
+
+        }
+
+        .button-icon{
+            font-size: $iconSize;
+            color: $iconColor;
+        }
+    }
+   
+}
+
+
+
+@mixin togglebuttonshadow {
+    box-shadow: inset 2px 3px 0 1px $primary_shadow,
+     inset -2px -2px 6px $secondary_shadow;
+  
+}
+
+@mixin metalliccircle($length) {
+    .toggle-button-metal {
+        width: $length;
+        height: $length;
+        background: $metallic_color; // Ensure this is defined
+        border-radius: 50%;
+
+    }
+}
+
+@mixin different_shades_ham_strips($color1,$color2){
+    .ham-strip{
+        width:80%;
+        height:5px;
+        background-color: whitesmoke;
+        // transform: skew(10deg, -2deg);transform
+        box-shadow: 0 3px 0 1px $color1,
+     inset -0 -2px 6px $color2;
+    }
+}
+

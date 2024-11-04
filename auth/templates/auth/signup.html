@@ -1,0 +1,44 @@
+{%extends 'base.html'%}
+
+{% block title %}{{ 'Sign Up' }}{% endblock %}
+
+
+{% block content %}
+    <div class="wrapper">
+     <form class="form-container" id="signupID" style="width: 30%">
+        <div class="form-group">
+            <label for="name">Name: </label>
+            <input type="text" id="name" placeholder="Enter your name" disabled>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Enter your email" disabled></div>
+        <div class="form-group">
+            <label>
+            <input type="checkbox" id="terms" checked disabled> I agree to the terms and
+            conditions
+            </label>
+        </div>
+         <button class="form-button" type="submit" disabled >
+           Submit
+        </button>
+         <hr style="border-color: #39c0ed">
+        <button class="form-button" style="background-color: #9146FF;">
+            <a href="{{ auth_link|safe }}" style="color: whitesmoke;text-decoration: none">Connect With Twitch</a>
+
+        </button>
+    </form>
+    <div class="wrapper-image">
+        <img style="width: 100%;height: 100%"  src="static/assets/hero/lowcontrast.jpeg">
+    </div>
+
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+{% include "footer.html" %}
+{% endblock %}
+{% block script %}
+
+{% endblock %}

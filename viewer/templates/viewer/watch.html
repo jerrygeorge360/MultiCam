@@ -1,0 +1,52 @@
+{%extends 'base.html'%}
+{% block stylesheet %}
+    <link rel="stylesheet" href="../static/stylesheet/watch.css">
+{% endblock %}
+{% block title %}{{ 'Watch' }}{% endblock %}
+
+{% block content %}
+    <div class="filter-actions">
+     {% for user_stream_data in user_streams_data %}
+             <a class="ghost-button-container embed-buttons" href="" style="text-decoration: none" >
+                    <div class="button-text-icon-container">
+                       <div class="avater"><img style="width: 100%"  src="static/assets/header/logo/data.png"></div>
+                        <div class="button-text" ><p>{{ user_stream_data.cam_angle }}</p></div>
+
+                    </div>
+                </a>
+    {% endfor %}
+    </div>
+    <div class="watch-con" >
+    <div class="watch-con-inner" id="watch-con-inner">
+        {{ user_streams_data[0].embed_code }}
+    </div>
+    </div>
+
+
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
+
+{% block script %}
+    <script>
+    const embedCode = [
+        {% for data in user_streams_data %}
+            {{ data.embed_code }}{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ]
+        document.addEventListener("DOMContentLoaded", function() {
+        const video_con = document.getElementById('watch-con-inner');
+    const embedButtons = document.querySelectorAll(".embed-buttons");
+    embedButtons.forEach((embedButton,index) => {
+
+        embedButton.addEventListener("click", function() {
+            video_con.innerHTML = embedCode[index].embed_code;
+
+        });
+    });
+});
+
+    </script>
+{% endblock %}

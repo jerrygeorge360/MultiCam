@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel ="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+    <link rel="stylesheet" href="../static/neumorize/dist/css/scss/index.css">
+    <link rel="stylesheet" href="../static/stylesheet/header.css">
+    {% block stylesheet %}{% endblock %}
+    <title>{% block title %}{{ title }}{% endblock %}</title>
+</head>
+<body>
+
+<div class="container">
+    {% include "header.html" %}
+    {% include "alerts.html" %}
+    {% block content %}
+
+    {% endblock %}
+
+
+    {% block footer %}
+    {% endblock %}
+
+
+
+</div>
+
+
+
+<script src="../static/neumorize/dist/js/all.min.js"></script>
+{% block script %}{{ script }}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,10 @@
+$card_title: 1em;
+$card_text: 12px;
+$image: "/neumorize/components/cards/pikachu.jpg";
+
+@mixin cardshadow {
+    box-shadow:
+        3px 5px 8px rgba($primary_shadow,0.2),
+        inset -3px -4px 6px  rgba($secondary_shadow,0.5),
+        inset 3px 4px 8px rgba($secondary_shadow,0.15);
+}

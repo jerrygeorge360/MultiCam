@@ -1,0 +1,45 @@
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
+    background-color: $background_color;
+    border-radius: 1em;
+    box-shadow: 5px 5px 10px $primary_shadow, -5px -5px 10px $secondary_shadow;
+}
+
+.pagination-numbers {
+    display: flex; /* Use flexbox for pagination numbers */
+    justify-content: center; /* Center the pagination numbers */
+    align-items: center; /* Align items vertically in the center */
+}
+
+.pagination-item, .pagination-previous, .pagination-next {
+    margin: 0 0.5em; /* Margin to space out pagination items */
+    padding: 0.5em 1em;
+    background-color: $background_color;
+    border-radius: 0.5em;
+    font-size: 1em;
+    color: $text_secondary;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 3px 3px 6px $primary_shadow, -3px -3px 10px $secondary_shadow;
+
+    &:hover {
+        background-color: $highlight_color;
+        color: $text_primary;
+        box-shadow: inset 3px 3px 6px $primary_shadow, inset -3px -3px 6px $secondary_shadow;
+    }
+}
+
+.pagination-item.active {
+    background-color: $accent_color1;
+    color: $text_primary;
+    box-shadow: inset 5px 5px 10px $primary_shadow, inset -5px -5px 10px $secondary_shadow;
+    font-weight: bold;
+}
+
+.pagination-previous.disabled, .pagination-next.disabled {
+    color: adjust-color($text_secondary, $lightness: -20%); /* Use adjust-color to reduce lightness */
+    cursor: not-allowed;
+}

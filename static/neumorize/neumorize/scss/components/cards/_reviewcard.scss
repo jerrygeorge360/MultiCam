@@ -1,0 +1,80 @@
+@import "cards";
+
+.review-card-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 12em;
+    height: 25em;
+    border-radius: 12px;
+    border: thin solid black;
+    overflow: hidden;
+    outline: 1px solid $highlight_color;
+    padding: 0.3em;
+    background: linear-gradient(to right, $background-color, $primary_shadow);
+
+    @include cardshadow;
+
+    .review-card-text-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        padding: $container_padding;
+
+        .product-card-title {
+            text-transform: capitalize;
+            font-size: $card_title;
+            font-weight: bold;
+            color: $text_primary;
+            margin-bottom: 1em;
+        }
+
+        // Review Rating Section
+        .review-rating {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 0.5em;
+
+            .star {
+                font-size: 1.2em;
+                color: $accent_color2; // Star color (e.g., Neon Green)
+                margin-right: 0.2em;Starcolormargin-right
+                
+                &:last-child {
+                    margin-right: 0; // No margin on the last star
+                }
+            }
+        }
+
+        // Review Overview Text
+        .review-card-overview-container {
+            height: 50%;
+            margin-bottom: 1em;
+            overflow: hidden;
+
+            .review-card-overview {
+                font-size: $card_text;
+                color: $text_secondary;
+                line-height: 1.4;
+            }
+        }
+
+        // CTA Section
+        .review-card-cta-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: auto;
+
+            .review-card-cta {
+                @extend .filled-button;
+
+ // Using the filled button style
+                font-size: $font_size_sm;
+                padding: 0.5em 1em;
+            }
+        }
+    }
+}

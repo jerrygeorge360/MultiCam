@@ -1,0 +1,125 @@
+.m-0 { margin: 0; }
+.m-1 { margin: 0.25rem; }
+.m-2 { margin: 0.5rem; }
+.m-3 { margin: 1rem; }
+.m-4 { margin: 2rem; }
+.p-0 { padding: 0; }
+.p-1 { padding: 0.25rem; }
+.p-2 { padding: 0.5rem; }
+
+// text utilities
+
+.text-primary { color: $text_primary; }
+.text-secondary { color: $text_secondary; }
+.font-large { font-size: 2em; }
+.font-medium { font-size: 1.5em; }
+.font-small { font-size: 1em; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+
+//background utililies
+.bg-dark { background-color: $background_color; }
+.bg-light { background-color: #fff; } // Example light background
+
+
+// display utilities
+
+.d-none { display: none; }
+.d-block { display: block; }
+.d-flex { display: flex; }
+.d-inline { display: inline; }
+
+
+// flexbox utiliites
+.flex-row { display: flex; flex-direction: row; }
+.flex-column { display: flex; flex-direction: column; }
+.justify-center { justify-content: center; }
+.align-center { align-items: center; }
+
+
+// positioning utilities
+
+.position-relative { position: relative; }
+.position-absolute { position: absolute; }
+.z-index-1 { z-index: 1; }
+
+
+// flex utilities
+.flex-1 { flex: 1; }
+.flex-grow { flex-grow: 1; }
+
+
+// hover utilities
+.hover-shadow { 
+    &:hover {
+        box-shadow: 5px 5px 15px $primary_shadow, -5px -5px 15px $secondary_shadow; 
+    }
+}
+
+
+//shadow utilitiees
+
+.shadow-small { box-shadow: 3px 3px 6px $primary_shadow, -3px -3px 6px $secondary_shadow; }
+.shadow-large { box-shadow: 5px 5px 15px $primary_shadow, -5px -5px 15px $secondary_shadow; }
+
+
+// border utilities
+.border { border: 1px solid $secondary_shadow; }
+.border-radius { border-radius: 0.5em; }
+
+
+// Spacing utilities
+@mixin spacing($property, $value) {
+    .#{property}-#{$value} { #{$property}: #{$value}; }
+}
+
+// Generate spacing utilities
+@mixin generate-spacing {
+    @for $i from 0 through 4 {
+        @include spacing(margin, $i * 0.25rem); // Example for margin
+        @include spacing(padding, $i * 0.25rem); // Example for padding
+    }
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px;
+}
+
+.option {
+    background-color: #333;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    font-size: 1.2em;
+    transition: background-color 0.3s ease;
+    color: white;
+    & > span{
+        color: gray;
+    }
+}
+
+.option:hover {
+    background-color: adjust-color(#333,$lightness:10%);
+    cursor: pointer;
+}
+
+.option:nth-child(1) {
+    color: #ff7f50;
+}
+
+.option:nth-child(2) {
+    color: #00ced1;
+}
+
+.option:nth-child(3) {
+    color: #ffd700;
+}
+
+.option:nth-child(4) {
+    color: #7fff00;
+}
+//@include generate-spacing;

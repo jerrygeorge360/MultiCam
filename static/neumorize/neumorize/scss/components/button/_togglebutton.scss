@@ -1,0 +1,26 @@
+@import "button";
+$buttonContainerWidth:2em;
+$buttonContainerHeight:5em;
+$buttonContainerPadding:0.3em;
+$metallicColorDiameter:1.4em;
+
+.toggle-button-container{
+        @include buttoncontainer(transparent,$buttonContainerHeight,$buttonContainerWidth,$buttonContainerPadding,25px,pointer,"false");
+        @include metalliccircle($metallicColorDiameter);
+        @include togglebuttonshadow;
+
+        position: relative;
+        transition:background-color 1s ease;
+    
+        &:hover{
+            background-color: $secondary_shadow;
+        }
+
+        &>div{
+            position: absolute;
+            left:0;
+            bottom:25%;
+            transition: left 1s ease;
+           
+        }
+}

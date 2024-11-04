@@ -1,0 +1,58 @@
+$button-width: 30em;
+$button-height: 1.5em;
+$button-padding: 2em;
+$button-border-radius: 4px;
+$transition-duration: 0.5s;
+$transition-timing: ease;
+
+@mixin base-button($color, $width, $height, $padding, $border-radius, $pointer, $scale) {
+    @include buttoncontainer($color, $width, $height, $padding, $border-radius, $pointer, $scale);
+    @include buttonshadow;
+    @include buttonTextIcon($text_primary, $font_size_sm, $text_primary, $font_size_sm);
+}
+
+$button-variants: (
+    "success": $accent_color2,
+    "error": $accent_color1,
+    "info": $accent_color3
+);
+
+@each $variant, $color in $button-variants {
+    .button-alert-#{$variant}
+
+ {
+        @include base-button($background_color, $button-width, $button-height, $button-padding, $button-border-radius, pointer, "false");
+
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        opacity: 0;
+        display: flex;
+        transform: translateY(-10px);
+        transition: opacity $transition-duration $transition-timing, transform $transition-duration $transition-timing;
+
+        &.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        &:hover {
+            background-color: adjust-color($background_color, $lightness: 3%);
+        }
+
+        & > .alert-icon {
+            font-size: 1.5em;
+            color: $color;
+            margin-right: 1em;
+        }
+
+        & > .alert-message {
+            color: $text_primary;
+            font-size: 1em;
+
+            p {
+                margin: 0;
+            }
+        }
+    }
+}

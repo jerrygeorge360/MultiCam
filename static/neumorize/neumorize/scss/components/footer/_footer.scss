@@ -1,0 +1,56 @@
+.footer-container {
+    display: flex;
+    padding: 2em 0;
+    background-color: $background_color;
+    //box-shadow: 5px 5px 10px $primary_shadow, -5px -5px 10px $secondary_shadow;
+    border-radius: 1em;
+    text-align: center; /* Center text in the footer */
+}
+
+.footer-item {
+    flex: 1;
+    margin: 0.5em 0; /* Space between items */
+    transition: all 0.3s ease;
+    &>h3{
+        font-size: 1.2em;
+        margin-bottom: 0.9em;
+        color: $text_primary;
+    }
+    &>ul{
+        list-style: none;
+        padding: 0;
+        &>li{
+            margin-bottom: 0.5em;
+            font-size: 1em;
+            color: $text_secondary;
+            &>a{
+                text-decoration: none;
+                color: inherit;
+            }
+        }
+
+    }
+
+}
+
+.social-media-icons {
+    display: flex;
+    justify-content: center; /* Center social media icons */
+    margin-top: 1em;
+}
+
+.icon {
+    margin: 0 1em; /* Space between icons */
+    font-size: 1.5em; /* Adjust icon size */
+    color: $text_secondary;
+    transition: all 0.3s ease;
+
+    &:hover {
+        color: $text_primary; /* Change color on hover */
+    }
+}
+footer {
+  text-align: center;
+  padding: 0.7em 0;
+  font-size: 0.8em;
+}

@@ -1,0 +1,20 @@
+.filter-actions{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
+    gap:1em;
+}
+.watch-con{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 90vh;
+}
+
+.watch-con-inner{
+    box-shadow:inset 4px 4px 10px #0C0C0C, inset 4px -4px 10px #0C0C0C;
+    width: 80%;
+    height: 80%;
+}

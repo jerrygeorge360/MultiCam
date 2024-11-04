@@ -1,0 +1,65 @@
+@import "cards";
+
+.blog-card-container {
+    display: flex;
+    width: 20em;
+    height: 12em;
+    border-radius: 12px;
+    border: thin solid black;
+    overflow: hidden;
+    outline: 1px solid $highlight_color;
+    padding: 0.3em;
+    background: linear-gradient(to right, $background-color, $primary_shadow);
+
+    @include cardshadow;
+
+    .blog-card-image-container {
+        background-color: transparent;
+        width: 40%;
+        // background-image: url($image);background-image
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: 50% 50%;
+        border-radius: 0.8em 0 0 0.8em;
+    }
+
+    .blog-card-text-container {
+        display: flex;
+        flex-direction: column;
+        background: transparent;
+        width: 57%;
+        padding: $container_padding;
+
+        .blog-card-title {
+            text-transform: capitalize;
+            font-size: $card_title;
+            font-weight: bold;
+            color: $text_primary;
+            margin-bottom: 1em;
+            margin-left: 0.7em;
+        }
+
+        .blog-card-overview-container {
+            overflow: hidden;
+            margin-left: 0.7em;
+
+            .blog-card-overview {
+                font-size: $card_text;
+                color: $text_secondary;
+                
+            }
+        }
+
+        .blog-card-text-button-container {
+            width: 100%;
+            margin-top: 2em;
+            display: flex;
+            justify-content: end;
+
+            .blog-card-text-button {
+                color: $accent_color3;
+            }
+        }
+    }
+}
+

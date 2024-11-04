@@ -1,0 +1,74 @@
+{%extends 'base.html'%}
+{% block stylesheet %}
+    <link rel="stylesheet" href="../static/stylesheet/viewer.css">
+{% endblock %}
+{% block title %}{{ 'Viewer' }}{% endblock %}
+
+{% block content %}
+    <div class="filter-actions" >
+            {% for i in button_captions %}
+             <a class="cta-button-container" href="" style="text-decoration: none" >
+                    <div class="button-text-icon-container">
+                       <div class="avater"><img style="width: 100%"  src="static/assets/header/logo/data.png"></div>
+                        <div class="button-text" ><p>{{ i }}</p></div>
+
+                    </div>
+                </a>
+    {% endfor %}
+    </div>
+
+    <div class="directory-con">
+    {% if active_users %}
+        {% for active_user in active_users %}
+    <div class="product-card-container" data-id = {{ active_user.id }}>
+    <div class="product-card-image-container" style="background-image:url('{{ active_user.profile_image_url }}');"></div>
+        <div class="product-card-text-container">
+            <div class="product-card-title">{{ active_user.username }}</div>
+            <div class="product-card-overview-container">
+                    <div class="product-card-overview">
+                        {{ active_user.email }}
+
+                    </div>
+                 <div class="product-card-overview">
+                 <p style="color: red">streaming....</p>
+                    </div>
+            </div>
+        </div>
+</div>
+{% endfor %}
+        {% else %}
+        <p>No active stream</p>
+    {% endif %}
+
+
+    </div>
+
+
+
+
+
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
+
+{% block script %}
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+
+    const userDivs = document.querySelectorAll(".product-card-container");
+
+    userDivs.forEach(div => {
+        div.addEventListener("click", function() {
+
+            const userId = div.getAttribute("data-id");
+
+            window.location.href = `/watch?userId=${userId}`;
+        });
+    });
+});
+
+
+    </script>
+{% endblock %}
