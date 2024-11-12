@@ -2,15 +2,21 @@
 
     <div class="navbar-container">
         <div class="navbar-brand">
-            <img  src="static/assets/header/logo/blumulticam.jpeg" alt="Multi-Cam">
+          <img src="{{ url_for('static', filename='assets/header/logo/blumulticam.jpeg') }}" alt="Multi-Cam">
         </div>
         <div class="navbar-elements-container nec">
 
         {% block containerelements %}
+                <a class="filled-button-container" href="{{ url_for('main.home') }}" style="text-decoration: none" >
+                    <div class="button-text-icon-container">
+                        <div class="avater"><img style="width: 100%"  src="{{ url_for('static', filename='assets/header/logo/home.png') }}"></div>
+                        <div class="button-text" ><p>Home</p></div>
+                    </div>
+                </a>
 
                 <a class="filled-button-container" href="{{ url_for('streamer.home') }}" style="text-decoration: none" >
                     <div class="button-text-icon-container">
-                       <div class="avater"><img style="width: 100%"  src="static/assets/header/logo/data.png"></div>
+                       <div class="avater"><img style="width: 100%"  src="{{ url_for('static', filename='assets/header/logo/data.png') }}"></div>
                         <div class="button-text" ><p>Stream</p></div>
 
                     </div>
@@ -18,14 +24,14 @@
 
               <a class="filled-button-container" href="{{ url_for('viewer.index') }}" style="text-decoration: none" >
                     <div class="button-text-icon-container">
-                          <div class="avater"><img style="width: 100%"  src="static/assets/header/logo/eye.png"></div>
+                          <div class="avater"><img style="width: 100%"  src="{{ url_for('static', filename='assets/header/logo/eye.png') }}"></div>
                         <div class="button-text" ><p>Watch</p></div>
                     </div>
                 </a>
 
              <a class="filled-button-container" href="" style="text-decoration: none" >
                     <div class="button-text-icon-container">
-                        <div class="avater"><img style="width: 100%"  src="static/assets/header/logo/globe.png"></div>
+                        <div class="avater"><img style="width: 100%"  src="{{ url_for('static', filename='assets/header/logo/globe.png') }}"></div>
                         <div class="button-text" ><p>Socials</p></div>
                     </div>
                 </a>

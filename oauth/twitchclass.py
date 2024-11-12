@@ -248,6 +248,7 @@ class OauthFacade:
 
     def get_auth_link(self):
         authorization_url = self.client.authorize(authorize_obj=self.authorize_obj)
+        print(authorization_url)
         return authorization_url
 
     def _get_access_code(self, **kwargs):

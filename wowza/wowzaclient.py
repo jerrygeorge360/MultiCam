@@ -24,7 +24,9 @@ key_path_username = 'live_stream.source_connection_information.username'
 key_path_password = 'live_stream.source_connection_information.password'
 # end connection
 key_path_embed_code = 'live_stream.embed_code'
+key_path_hls ='live_stream.hls_playback_url'
 key_path_created_at = 'live_stream.created_at'
+
 
 
 
@@ -33,7 +35,7 @@ def get_nested_value(data: json, key_path):
     keys = key_path.split('.')
     value = json.loads(data)
     for key in keys:
-        # print('hit', key)
+        print('hit', key)
         if isinstance(value, dict) and key in value:
             value = value[key]
         else:
@@ -80,6 +82,8 @@ class WowzaClientConfig:
         self.username: Optional[str] = None
         self.password: Optional[str] = None
         self.embed_code: Optional[str] = None
+        self.hls:Optional[str] = None
+        self.primary_server:Optional[str] = None
         self.created_at: str = ''
 
         self.cam_angle:Optional[str] = None
@@ -155,6 +159,8 @@ class WowzaClient(WowzaClientBase):
         data = self.url_construct()
         # data = mock_data()
         self.data.embed_code = get_nested_value(data, key_path_embed_code)
+        self.data.hls = get_nested_value(data,key_path_hls)
+        self.data.primary_server = get_nested_value(data,key_path_primary_server)
         return self.data
 
     def start_listening_to_stream(self, stream_id):
@@ -201,7 +207,8 @@ class MultiUserStreamMeta(type):
             raise ValueError("user_id must be provided")
         if object_id is None:
             raise ValueError("object_id must be provided")
-
+        if user_id =='default' and object_id == 'default':
+            return super().__call__(*args, **kwargs)
         key = (user_id, object_id)
         if key not in cls._instances:
             logger.info('key not found\nAdding Instance...')
@@ -211,7 +218,7 @@ class MultiUserStreamMeta(type):
 
 
 class WowzaFacade(metaclass=MultiUserStreamMeta):
-    def __init__(self, user_id: int = None, object_id: str = None, cam_angle=None, cam_label=None):
+    def __init__(self, user_id: int or str = None, object_id: str = None, cam_angle=None, cam_label=None):
         self.user_id = user_id
         self.object_id = str(object_id)
         self.client = WowzaClient()
@@ -229,18 +236,21 @@ class WowzaFacade(metaclass=MultiUserStreamMeta):
                 'username': self.client.data.username,
                 'password': self.client.data.password,
                 'embed_code': self.client.data.embed_code,
+                'hls':self.client.data.hls,
+                'primary_server':self.client.data.primary_server,
                 'cam_angle': self.client.data.cam_angle,
                 'cam_label': self.client.data.cam_label
             }
         try:
             start_stream = self.client.create_live_stream()
-            print(start_stream)
             self.client.data.stream_id = start_stream.stream_id
             self.client.data.stream_name = start_stream.stream_name
             self.client.data.stream_state = start_stream.state
             self.client.data.username = start_stream.username
             self.client.data.password = start_stream.password
             self.client.data.embed_code = start_stream.embed_code
+            self.client.data.hls = start_stream.hls
+            self.client.data.primary_server = start_stream.primary_server
         except Exception as e:
             logger.error(f"Problem with creating live stream: {str(e)}")
             return 'failed'
@@ -274,6 +284,8 @@ class WowzaFacade(metaclass=MultiUserStreamMeta):
                 'username': self.client.data.username,
                 'password': self.client.data.password,
                 'embed_code': self.client.data.embed_code,
+                'hls':self.client.data.hls,
+                'primary_server':self.client.data.primary_server,
                 'cam_angle': self.client.data.cam_angle,
                 'cam_label': self.client.data.cam_label
             }
@@ -315,6 +327,14 @@ class WowzaFacade(metaclass=MultiUserStreamMeta):
         # Returns a set of unique user IDs
         return {uid for (uid, _) in MultiUserStreamMeta._instances.keys()}
 
+    @classmethod
+    def get_users_with_active_streams(cls) -> set:
+        return {uid for (uid, _), instance in MultiUserStreamMeta._instances.items() if
+                instance.client.data.stream_state == True}
+
+    @classmethod
+    def get_instances_by_stream_state(cls, state):
+        return [instance for instance in MultiUserStreamMeta._instances.values() if instance.stream_state == state]
 
     @classmethod
     def get_user_instances(cls, user_id):
@@ -322,3 +342,18 @@ class WowzaFacade(metaclass=MultiUserStreamMeta):
         # facade_instances_list[index].method/property
 
         return [instance for (uid, _), instance in MultiUserStreamMeta._instances.items() if uid == user_id]
+
+    def to_dict(self):
+        return {
+            'object_id': self.object_id,
+            'stream_id': self.client.data.stream_id,
+            'stream_name': self.client.data.stream_name,
+            'stream_state': self.client.data.stream_state,
+            'username': self.client.data.username,
+            'password': self.client.data.password,
+            'embed_code': self.client.data.embed_code,
+            'hls':self.client.data.hls,
+            'primary_server':self.client.data.primary_server,
+            'cam_angle': self.client.data.cam_angle,
+            'cam_label': self.client.data.cam_label
+        }

@@ -11,3 +11,4 @@
 <a href="https://www.flaticon.com/free-icons/ecology-and-environment" title="ecology and environment icons">Ecology and environment icons created by Muhammad Ali - Flaticon</a>
 
 <a href="https://www.flaticon.com/free-icons/wellness" title="wellness icons">Wellness icons created by meaicon - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/smart-home" title="smart home icons">Smart home icons created by juicy_fish - Flaticon</a>

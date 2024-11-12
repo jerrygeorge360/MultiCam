@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My live stream</title>
+<style>
+    #player-pfllqx6c {
+        width: 400px;
+        height: 400px;
+    }
+</style>
+<link rel="stylesheet" href="https://cdn.flowplayer.com/releases/native/3/stable/style/flowplayer.css">
+<script src="https://cdn.flowplayer.com/releases/native/3/stable/flowplayer.min.js"></script>
+<!-- load HLS plugin as platform videos default to HLS -->
+<script src="https://cdn.flowplayer.com/releases/native/3/stable/plugins/hls.min.js"></script>
+<!-- load Wowza Video Platform Integration plugin so your live stream or video id can be leveraged  -->
+<script src="https://cdn.flowplayer.com/releases/native/3/stable/plugins/ovp.min.js"></script>
+<!-- Optional plugins -->
+</head>
+<body>
+    <video id="video" controls width="640" height="360"></video>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+        if (Hls.isSupported()) {
+            const video = document.getElementById('video');
+            const hls = new Hls();
+            hls.loadSource('https://5ded087c6666.entrypoint.cloud.wowza.com/app-5158S3m6/ngrp:0fc84601_all/playlist.m3u8');
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                video.play();
+            });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            // HLS support for Safari (macOS & iOS)
+            video.src = 'https://5ded087c6666.entrypoint.cloud.wowza.com/app-5158S3m6/ngrp:0fc84601_all/playlist.m3u8';
+            video.addEventListener('loadedmetadata', function() {
+                video.play();
+            });
+        }
+    </script>
+    
+</body>
+</html>

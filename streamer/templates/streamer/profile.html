@@ -1,10 +1,10 @@
 <div class="product-card-container">
-    <div class="product-card-image-container" style="background-image:url('{{  user.profile_image_url|safe }}');"></div>
+    <div class="product-card-image-container" style="background-image:url('{{  current_user.profile_image_url|safe }}');"></div>
         <div class="product-card-text-container">
-            <div class="product-card-title">{{ user.username|safe }}</div>
+            <div class="product-card-title">{{ current_user.username|safe }}</div>
             <div class="product-card-overview-container">
                     <div class="product-card-overview">
-                        {{ user.email|safe }}
+                        {{ current_user.email|safe }}
                     </div>
             </div>
         </div>

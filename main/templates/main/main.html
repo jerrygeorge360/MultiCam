@@ -36,8 +36,9 @@
      <section class="section">
 
    <div class="infographic-container">
-       <h2>Onboading</h2>
-       <img src="static/assets/main/Infografix.svg" alt="">
+       <h2>Onboarding</h2>
+     <img src="{{ url_for('static', filename='assets/main/Infografix.svg') }}" alt="Infographic">
+
 </div>
 
 
@@ -53,7 +54,15 @@
 
 {% block script %}
     <script>
-    const imagesData = [{src: "static/assets/hero/dalle.webp", alt: "",headline:"MultiCam",text:"{{ caption|safe }}",buttonText:"Explore"}]
+    const imagesData = [
+  {
+    src: "{{ url_for('static', filename='assets/hero/dalle.webp') }}",
+    alt: "",
+    headline: "MultiCam",
+    text: "{{ caption|safe }}",
+    buttonText: "Explore"
+  }
+];
     const options = {
                     containerSelector: '.carousel',
                     writeOnTop: true,
@@ -62,6 +71,5 @@
                     nextButtonSelector: '.next'
             };
     let slider = new Carousel(options);
-    console.log(slider.imagesData);
     </script>
 {% endblock %}

@@ -1,24 +1,68 @@
 {%extends 'base.html'%}
 {% block stylesheet %}
-    <link rel="stylesheet" href="../static/stylesheet/watch.css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='stylesheet/watch.css') }}">
+<style>
+    #player-pfllqx6c {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
 {% endblock %}
 {% block title %}{{ 'Watch' }}{% endblock %}
 
 {% block content %}
     <div class="filter-actions">
      {% for user_stream_data in user_streams_data %}
-             <a class="ghost-button-container embed-buttons" href="" style="text-decoration: none" >
+             <div class="ghost-button-container embed-buttons"  style="text-decoration: none" >
                     <div class="button-text-icon-container">
-                       <div class="avater"><img style="width: 100%"  src="static/assets/header/logo/data.png"></div>
+                       <div class="avater"><img style="width: 100%"  src="{{ url_for('static',filename='assets/header/logo/data.png') }}"></div>
                         <div class="button-text" ><p>{{ user_stream_data.cam_angle }}</p></div>
 
                     </div>
-                </a>
+                </div>
     {% endfor %}
     </div>
     <div class="watch-con" >
-    <div class="watch-con-inner" id="watch-con-inner">
-        {{ user_streams_data[0].embed_code }}
+    <div class="watch-con-inner" id="watch-con-inner" style="padding:0.6em">
+{#        insert html  here #}
+        <video id="video" controls width="100%" height="100%"></video>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+           let hls;
+        function loadStream(index){
+            const url = embedCode[index];
+                if (hls) {
+            hls.destroy();
+        }
+        if (Hls.isSupported()) {
+            const video = document.getElementById('video');
+            const hls = new Hls();
+            hls.loadSource(url);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                video.play();
+            });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            // HLS support for Safari (macOS & iOS)
+            video.src = 'https://5ded087c6666.entrypoint.cloud.wowza.com/app-5158S3m6/ngrp:0fc84601_all/playlist.m3u8';
+            video.addEventListener('loadedmetadata', function() {
+                video.play();
+            });
+        }
+
+        }
+
+        const arrayCheckInterval = setInterval(() => {
+        if (embedCode.length > 0) {
+            clearInterval(arrayCheckInterval); // Stop checking once the array is populated
+            loadStream(0); // Load the first stream
+        }
+    }, 100);
+
+    </script>
+
+
     </div>
     </div>
 
@@ -33,16 +77,17 @@
     <script>
     const embedCode = [
         {% for data in user_streams_data %}
-            {{ data.embed_code }}{% if not loop.last %},{% endif %}
+            {{ data.hls|safe|tojson }}{% if not loop.last %},{% endif %}
         {% endfor %}
     ]
+    console.log(embedCode)
         document.addEventListener("DOMContentLoaded", function() {
         const video_con = document.getElementById('watch-con-inner');
     const embedButtons = document.querySelectorAll(".embed-buttons");
     embedButtons.forEach((embedButton,index) => {
 
         embedButton.addEventListener("click", function() {
-            video_con.innerHTML = embedCode[index].embed_code;
+            loadStream(index);
 
         });
     });

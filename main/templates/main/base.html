@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel ="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
-    <link rel="stylesheet" href="../static/neumorize/dist/css/scss/index.css">
-    <link rel="stylesheet" href="../static/stylesheet/header.css">
+ <link rel="stylesheet" href="{{ url_for('static', filename='neumorize/dist/css/scss/index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='stylesheet/header.css') }}">
+
     {% block stylesheet %}{% endblock %}
     <title>{% block title %}{{ title }}{% endblock %}</title>
 </head>
@@ -27,7 +28,8 @@
 
 
 
-<script src="../static/neumorize/dist/js/all.min.js"></script>
+<script src="{{ url_for('static', filename='neumorize/dist/js/all.min.js') }}"></script>
+
 {% block script %}{{ script }}{% endblock %}
 </body>
 </html>

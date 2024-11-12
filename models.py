@@ -18,20 +18,20 @@ class User(db.Model, UserMixin):
     email: Mapped[str] = mapped_column()
     token_data: Mapped[str] = mapped_column()
     profile_image_url: Mapped[str] = mapped_column()
-    streams: Mapped[List['Stream']] = relationship('Stream', back_populates='user')
+    # streams: Mapped[List['Stream']] = relationship('Stream', back_populates='user')
 
 
 # TODO : rewrite this User class to implement user mixin methods
 
-class Stream(db.Model):
-    object_id: Mapped[str] = mapped_column(String, primary_key=True, unique=True)
-    cam_angle: Mapped[str] = mapped_column()
-    cam_label: Mapped[str] = mapped_column()
-    stream_name: Mapped[str] = mapped_column()
-    stream_id: Mapped[str] = mapped_column()
-    password: Mapped[str] = mapped_column()
-    user_name: Mapped[str] = mapped_column()
-    embed_code: Mapped[str] = mapped_column()
-    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
-    active: Mapped[bool] = mapped_column(default=False)
-    user: Mapped[User] = relationship('User', back_populates='streams')
+# class Stream(db.Model):
+#     object_id: Mapped[str] = mapped_column(String, primary_key=True, unique=True)
+#     cam_angle: Mapped[str] = mapped_column()
+#     cam_label: Mapped[str] = mapped_column()
+#     stream_name: Mapped[str] = mapped_column()
+#     stream_id: Mapped[str] = mapped_column()
+#     password: Mapped[str] = mapped_column()
+#     user_name: Mapped[str] = mapped_column()
+#     embed_code: Mapped[str] = mapped_column()
+#     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
+#     active: Mapped[bool] = mapped_column(default=False)
+#     user: Mapped[User] = relationship('User', back_populates='streams')

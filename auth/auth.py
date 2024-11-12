@@ -1,8 +1,9 @@
 import json
 import logging
+
 from sqlalchemy.exc import SQLAlchemyError
 from flask import Blueprint, url_for, redirect, session, render_template
-from flask_login import login_user, logout_user, login_required,current_user
+from flask_login import login_user, logout_user,current_user
 from oauth.twitchclass import TwitchUserService, extract_twitch_info, OauthFacade
 from models import User,db
 
@@ -10,7 +11,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 auth = Blueprint("auth", __name__, template_folder="templates/auth", static_folder="static")
-oauth_obj = OauthFacade()
+oauth_obj = OauthFacade(response_type="code",
+                        scope=["user:read:email", "user:read:broadcast", "moderator:read:followers",
+                               "user:read:follows"])
 
 
 def _login_user():
@@ -71,14 +74,41 @@ def _login_user():
     return redirect(url_for('main.home'))
 
 
-@auth.get('/login')
+@auth.get('/api/v1/login')
 def login_get():
+    """
+       Get the OAuth login link
+       ---
+       description: This endpoint generates an OAuth login link for user authentication.
+       responses:
+         200:
+           description: Renders the signup page with the OAuth login link.
+           content:
+             text/html:
+               schema:
+                 type: string
+                 example: "<html>...signup page content...</html>"
+       """
     auth_instance = oauth_obj
     auth_link = auth_instance.get_auth_link()
     return render_template('signup.html', auth_link=auth_link)
 
+#TODO : write refresh token route
 
-@auth.route('/logout')
+@auth.route('/api/v1/logout')
 def logout():
+    """
+        Logout the current user
+        ---
+        description: This endpoint logs out the current user by ending their session and redirecting to the login page.
+        responses:
+          302:
+            description: Redirects the user to the login page after logging out.
+            content:
+              text/html:
+                schema:
+                  type: string
+                  example: "Redirecting to /login..."
+        """
     logout_user()
     return redirect(url_for('auth.login_get'))
