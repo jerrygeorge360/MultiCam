@@ -29,7 +29,7 @@ class TwitchOauthBase(ABC):
         ...
 
     @abstractmethod
-    def refresh_access_token(self):
+    def refresh_access_token(self,authorize_obj):
         ...
 
 
@@ -146,7 +146,7 @@ class TwitchOauthAccessCode(TwitchOauthBase):
         self.conn = http.client.HTTPSConnection(TwitchOauthAccessCode.base_url)
 
     def validate_token(self, access_token: str):
-        endpoint = 'oauth2/validate'
+        endpoint = '/oauth2/validate'
         header = {'Authorization': f'OAUTH {access_token}'}
         self.conn.request("GET", endpoint, headers=header)
 
@@ -208,7 +208,7 @@ class TwitchOauthAccessCode(TwitchOauthBase):
         # TODO: store access_token and refresh_token in database.
 
     def refresh_access_token(self, authorize_obj):
-        # write a query to get the stored refresh token
+        #TODO: write a query to get the stored refresh token
         refresh_token = ...  # Retrieve from storage
         endpoint = '/oauth2/token'
         body = {

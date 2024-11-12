@@ -1,7 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy import String, Integer, DateTime, ForeignKey, LargeBinary
-from datetime import datetime
 from typing import List
 from flask_login import UserMixin
 
@@ -21,6 +20,8 @@ class User(db.Model, UserMixin):
     profile_image_url: Mapped[str] = mapped_column()
     streams: Mapped[List['Stream']] = relationship('Stream', back_populates='user')
 
+
+# TODO : rewrite this User class to implement user mixin methods
 
 class Stream(db.Model):
     object_id: Mapped[str] = mapped_column(String, primary_key=True, unique=True)

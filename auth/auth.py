@@ -4,15 +4,13 @@ from sqlalchemy.exc import SQLAlchemyError
 from flask import Blueprint, url_for, redirect, session, render_template
 from flask_login import login_user, logout_user, login_required,current_user
 from oauth.twitchclass import TwitchUserService, extract_twitch_info, OauthFacade
-from models import *
+from models import User,db
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 auth = Blueprint("auth", __name__, template_folder="templates/auth", static_folder="static")
-oauth_obj = OauthFacade(response_type="code",
-                        scope=["user:read:email", "user:read:broadcast", "moderator:read:followers",
-                               "user:read:follows"])
+oauth_obj = OauthFacade()
 
 
 def _login_user():
@@ -43,9 +41,9 @@ def _login_user():
     if existing_user:
         login_user(existing_user)
         session.permanent = True
-        print(f"User logged in: {existing_user.username}")  # Debug output
-        print(f"Current user: {current_user.username}")  # Debug output
-        print(f"Is authenticated: {current_user.is_authenticated}")
+        logger.info(f"User logged in: {existing_user.username}")
+        logger.info(f"Current user: {current_user.username}")
+        logger.info(f"Is authenticated: {current_user.is_authenticated}")
         return redirect(url_for('main.home'))
 
     new_user = User(
@@ -53,7 +51,7 @@ def _login_user():
         username=username,
         email=email,
         token_data=json.dumps(oauth_data),
-        profile_image_url=profile_image_url
+        profile_image_url=profile_image_url,
     )
 
     try:

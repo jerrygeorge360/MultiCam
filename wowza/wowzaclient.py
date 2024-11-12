@@ -4,7 +4,13 @@ import json
 import os
 from dotenv import load_dotenv
 from typing import Optional
-from uuid import uuid4
+import logging
+from time import sleep
+
+
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 wowza_access_token = os.environ.get('WOWZA_STREAMING_CLOUD_TOKEN')
@@ -19,6 +25,8 @@ key_path_password = 'live_stream.source_connection_information.password'
 # end connection
 key_path_embed_code = 'live_stream.embed_code'
 key_path_created_at = 'live_stream.created_at'
+
+
 
 
 def get_nested_value(data: json, key_path):
@@ -65,13 +73,17 @@ class WowzaClientConfig:
         self._headers: dict = {}
         self._base_api: str = 'api.video.wowza.com'
         self._api: str = ''
-        self.stream_id: str = ''
+        self.stream_id: Optional[str] = None
+        self.stream_name: Optional[str] = None
+        self.stream_state: bool = False
         self.state: str = ''
-        self.stream_name: str = ''
-        self.username: str = ''
-        self.password: str = ''
+        self.username: Optional[str] = None
+        self.password: Optional[str] = None
         self.embed_code: Optional[str] = None
         self.created_at: str = ''
+
+        self.cam_angle:Optional[str] = None
+        self.cam_label:Optional[str] = None
 
     @property
     def payload(self) -> json:
@@ -127,6 +139,7 @@ class WowzaClient(WowzaClientBase):
         self.data.api = '/api/v2.0/live_streams'
         self.conn.request("POST", self.data.api, body=self.data.payload, headers=self.data.header)
         data = self.url_construct()
+        # data = mock_data()
         self.data.stream_id = get_nested_value(data, key_path_id)
         self.data.state = get_nested_value(data, key_path_state)
         self.data.stream_name = get_nested_value(data, key_path_stream_name)
@@ -134,11 +147,13 @@ class WowzaClient(WowzaClientBase):
         self.data.password = get_nested_value(data, key_path_password)
         return self.data
 
+    # This ensures the embed code attribute is set after the creation of the stream instead of showing processing.
     def initialize_live_stream(self, stream_id):
         self.data.api = f'/api/v2.0/live_streams/{stream_id}'
         self.data.payload = ''
         self.conn.request("GET", self.data.api, self.data.payload, self.data.header)
         data = self.url_construct()
+        # data = mock_data()
         self.data.embed_code = get_nested_value(data, key_path_embed_code)
         return self.data
 
@@ -147,7 +162,8 @@ class WowzaClient(WowzaClientBase):
         self.data.payload = ''
         self.conn.request("PUT", self.data.api, self.data.payload, self.data.header)
         data = self.url_construct()
-        self.data.state = get_nested_value(data, key_path_state)
+        # data = mock_data1()
+        self.data.stream_state = get_nested_value(data, key_path_state)
         return self.data
 
     def get_state_of_stream(self, stream_id):
@@ -163,7 +179,8 @@ class WowzaClient(WowzaClientBase):
         self.data.payload = ''
         self.conn.request("PUT", self.data.api, self.data.payload, self.data.header)
         data = self.url_construct()
-        self.data.state = get_nested_value(data, key_path_state)
+        # data = mock_data1()
+        self.data.stream_state = get_nested_value(data, key_path_state)
         return self.data
 
     def url_construct(self):
@@ -173,113 +190,135 @@ class WowzaClient(WowzaClientBase):
 
 
 class MultiUserStreamMeta(type):
+    # this ensures that each stream of a user has it own instance,which can be accessed if it already exists, hence maximizing resources
     _instances = {}
 
     def __call__(cls, *args, **kwargs):
-        user_id = kwargs.get('user_id')
-        object_id = kwargs.get('object_id')
+        user_id = kwargs.get('user_id') or args[0]
+        object_id = kwargs.get('object_id') or args[1]
 
-        # if user_id is None:
-        #     raise ValueError("user_id must be provided")
+        if user_id is None:
+            raise ValueError("user_id must be provided")
+        if object_id is None:
+            raise ValueError("object_id must be provided")
 
         key = (user_id, object_id)
-
         if key not in cls._instances:
-            print('not here')
+            logger.info('key not found\nAdding Instance...')
             cls._instances[key] = super().__call__(*args, **kwargs)
-        print('here')
+        logger.info(f'\ninstances:{MultiUserStreamMeta._instances} ')
         return cls._instances[key]
 
 
 class WowzaFacade(metaclass=MultiUserStreamMeta):
-    def __init__(self, user_id: int = None, object_id: uuid4 = None, cam_angle=None, cam_label=None):
+    def __init__(self, user_id: int = None, object_id: str = None, cam_angle=None, cam_label=None):
         self.user_id = user_id
         self.object_id = str(object_id)
         self.client = WowzaClient()
-        self.embed_code: Optional[str] = None
-        self.stream_id: Optional[str] = None
-        self.stream_name: Optional[str] = None
+        self.client.data.cam_label = cam_label
+        self.client.data.cam_angle = cam_angle
         self.initialized = False
-        self.username: Optional[str] = None
-        self.password: Optional[str] = None
-        self.stream_state: bool = False
-        self.cam_label = cam_label
-        self.cam_angle = cam_angle
 
     def setup(self):
         if self.initialized:
             return {
-                'id': self.stream_id,
-                'stream_name': self.stream_name,
                 'object_id': self.object_id,
-                'stream_state': self.stream_state,
-                'username': self.username,
-                'password': self.password,
-                'embed_code': self.embed_code,
-                'initialized': True,
-                'cam_angle': self.cam_angle,
-                'cam_label': self.cam_label
+                'stream_id':self.client.data.stream_id,
+                'stream_name': self.client.data.stream_name,
+                'stream_state': self.client.data.stream_state,
+                'username': self.client.data.username,
+                'password': self.client.data.password,
+                'embed_code': self.client.data.embed_code,
+                'cam_angle': self.client.data.cam_angle,
+                'cam_label': self.client.data.cam_label
             }
-        start_stream = self.client.create_live_stream()
-        self.stream_id = start_stream.stream_id
-        self.stream_name = start_stream.stream_name
-        self.stream_state = start_stream.state
-        self.username = start_stream.username
-        self.password = start_stream.password
-        initialize_stream = self.client.initialize_live_stream(stream_id=self.stream_id)
-        self.embed_code = initialize_stream.embed_code
-        self.initialized = True
-        return {'id': self.stream_id, 'stream_name': self.stream_name, 'stream_state': self.stream_state,
-                'object_id': self.object_id, 'username': self.username,
-                'password': self.password, 'cam_angle': self.cam_angle,
-                'cam_label': self.cam_label, 'initialized': False}
+        try:
+            start_stream = self.client.create_live_stream()
+            print(start_stream)
+            self.client.data.stream_id = start_stream.stream_id
+            self.client.data.stream_name = start_stream.stream_name
+            self.client.data.stream_state = start_stream.state
+            self.client.data.username = start_stream.username
+            self.client.data.password = start_stream.password
+            self.client.data.embed_code = start_stream.embed_code
+        except Exception as e:
+            logger.error(f"Problem with creating live stream: {str(e)}")
+            return 'failed'
+        try:
+            initialize_stream = self.client.initialize_live_stream(stream_id=self.client.data.stream_id)
+            embed_code = initialize_stream.embed_code
 
-    def get_embed_code(self) -> Optional[str]:
-        return self.embed_code
+            retries:int = 0
+            while embed_code == 'in_progress':
+                # takes a while to get initialized in the wowza server
+                sleep(2)
+                print('Waiting for stream to initialize...')
+                initialize_stream = self.client.initialize_live_stream(stream_id=self.client.data.stream_id)
 
-    def get_stream_name(self) -> Optional[str]:
-        return self.stream_name
+                # embed_code = get_nested_value(initialize_stream, key_path_embed_code)
+                embed_code = initialize_stream.embed_code
+                retries += 1
+                if retries > 10:
+                    logger.error("Max retries reached while waiting for stream initialization")
+                    return 'failed'
 
-    def get_strean_id(self):
-        return self.stream_id
+
+            self.client.data.embed_code = embed_code
+            self.initialized = True
+            logger.info(f"Stream initialized with embed code: {self.client.data.embed_code}")
+            return {
+                'object_id': self.object_id,
+                'stream_id':self.client.data.stream_id,
+                'stream_name': self.client.data.stream_name,
+                'stream_state': self.client.data.stream_state,
+                'username': self.client.data.username,
+                'password': self.client.data.password,
+                'embed_code': self.client.data.embed_code,
+                'cam_angle': self.client.data.cam_angle,
+                'cam_label': self.client.data.cam_label
+            }
+        except Exception as e:
+            logger.error(f"Error during stream initialization: {str(e)}")
+            return 'failed'
 
     def listen_to_stream(self):
-        resp = self.client.start_listening_to_stream(stream_id=self.stream_id)
-        stream_state = resp.state
-        if resp:
-            self.stream_state = True
-        return {'state': resp.state}
+        try:
+            listen = self.client.start_listening_to_stream(stream_id=self.client.data.stream_id)
+            stream_state = listen.stream_state
+            print(stream_state)
+            if stream_state == 'starting':
+                self.client.data.stream_state = True
+                return {'state': self.client.data.stream_state}
+            # raise a custom error
+        except Exception:
+            ...
 
     def stop_stream(self):
+        try:
+            stop = self.client.stop_listening_to_stream(stream_id=self.client.data.stream_id)
+            stream_state = stop.stream_state
+            if stream_state == 'stopped':
+                self.client.data.stream_state = False
+                return {'state': self.client.data.stream_state}
+        except Exception:
+            ...
 
-        resp = self.client.stop_listening_to_stream(stream_id=self.stream_id)
-        if resp:
-            self.stream_state = False
-        return {'state': resp.state}
-
-    def delete_instance(self):
-        self.stop_stream()
-        key = (self.user_id, self.object_id)
+    @classmethod
+    def delete_instance(cls,user_id,object_id):
+        key = (user_id,object_id)
         if key in MultiUserStreamMeta._instances:
             del MultiUserStreamMeta._instances[key]
-        return {'status': 'deleted', 'stream_id': self.stream_id}
+        return {'status': 'deleted'}
+
+    @classmethod
+    def get_unique_user_ids(cls)-> set[str]:
+        # Returns a set of unique user IDs
+        return {uid for (uid, _) in MultiUserStreamMeta._instances.keys()}
+
 
     @classmethod
     def get_user_instances(cls, user_id):
+        # returns different facade instances
+        # facade_instances_list[index].method/property
 
         return [instance for (uid, _), instance in MultiUserStreamMeta._instances.items() if uid == user_id]
-
-    def to_dict(self):
-        return {
-            'user_id': self.user_id,
-            'object_id': str(self.object_id),  # Convert UUID to a string
-            'embed_code': self.embed_code,
-            'stream_id': self.stream_id,
-            'stream_name': self.stream_name,
-            'stream_state': self.stream_state,
-            'username': self.username,
-            'password': self.password,
-            'initialized': self.initialized,
-            'cam_label': self.cam_label,
-            'cam_angle': self.cam_angle
-        }
