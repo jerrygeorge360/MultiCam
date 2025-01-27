@@ -50,3 +50,5 @@ The Multi-Camera Twitch Viewer App allows viewers to choose their preferred came
 - **Advanced Analytics**: Provide streamers with analytics on which camera angles are popular among viewers.
 - **Viewer Interaction Tools**: Enable chat or poll features for real-time viewer interaction.
 - **UI improvements**:
+
+This project is available on Docker Hub: `jerrygeorge/multicamtwitch`

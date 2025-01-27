@@ -1,41 +1,100 @@
-<!DOCTYPE html>
 <html>
-<head>
-<title>My live stream</title>
 <style>
-    #player-pfllqx6c {
-        width: 400px;
-        height: 400px;
-    }
+body {
+   font-family: Arial, sans-serif;
+   margin: 0;
+   padding: 0;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   height: 100vh;
+   background-color: #f8f9fa;
+   color: #343a40;
+}
+
+.container {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   height: 100%;
+}
+
+.model-container {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-around;
+   width: 100%;
+   margin-bottom: 20px;
+}
+
+.model-container img {
+   width: 45%;
+   height: 300px;
+   border-radius: 10px;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.interactive-container {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   width: 100%;
+}
+
+.interactive-container form {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   width: 100%;
+   padding: 20px;
+   border: 1px solid #dee2e6;
+   border-radius: 10px;
+}
+
+.interactive-container form input,
+.interactive-container form textarea {
+   width: 100%;
+   margin-bottom: 10px;
+   padding: 10px;
+   border: none;
+   border-radius: 10px;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.interactive-container form button {
+   background-color: #007bff;
+   color: #fff;
+   border: none;
+   padding: 10px 20px;
+   border-radius: 10px;
+   cursor: pointer;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
 </style>
-<link rel="stylesheet" href="https://cdn.flowplayer.com/releases/native/3/stable/style/flowplayer.css">
-<script src="https://cdn.flowplayer.com/releases/native/3/stable/flowplayer.min.js"></script>
-<!-- load HLS plugin as platform videos default to HLS -->
-<script src="https://cdn.flowplayer.com/releases/native/3/stable/plugins/hls.min.js"></script>
-<!-- load Wowza Video Platform Integration plugin so your live stream or video id can be leveraged  -->
-<script src="https://cdn.flowplayer.com/releases/native/3/stable/plugins/ovp.min.js"></script>
-<!-- Optional plugins -->
-</head>
 <body>
-    <video id="video" controls width="640" height="360"></video>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <script>
-        if (Hls.isSupported()) {
-            const video = document.getElementById('video');
-            const hls = new Hls();
-            hls.loadSource('https://5ded087c6666.entrypoint.cloud.wowza.com/app-5158S3m6/ngrp:0fc84601_all/playlist.m3u8');
-            hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                video.play();
-            });
-        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            // HLS support for Safari (macOS & iOS)
-            video.src = 'https://5ded087c6666.entrypoint.cloud.wowza.com/app-5158S3m6/ngrp:0fc84601_all/playlist.m3u8';
-            video.addEventListener('loadedmetadata', function() {
-                video.play();
-            });
-        }
-    </script>
-    
+   <div class="container">
+       <div class="model-container">
+           <img src="model.jpg" alt="3D Model">
+           <form class="interactive-container">
+               <input type="text" placeholder="Customize 3D Model">
+               <button type="submit">Submit</button>
+           </form>
+       </div>
+       <p>Since the model used for this demo does not generate images, it is more effective to input standalone website elements or sites with <img src="placeholder.jpg" alt="Placeholder Image"></p>
+       <div class="model-container">
+           <img src="placeholder.jpg" alt="Placeholder Image">
+           <form class="interactive-container">
+               <input type="text" placeholder="Customize 3D Model">
+               <button type="submit">Submit</button>
+           </form>
+       </div>
+       <div class="interactive-container">
+           <form>
+               <input type="text" placeholder="Customize 3D Model">
+               <button type="submit">Submit</button>
+           </form>
+       </div>
+   </div>
 </body>
 </html>
