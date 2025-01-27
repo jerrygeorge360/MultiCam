@@ -9,6 +9,7 @@ Flask-Login==0.6.3
 Flask-Migrate==4.0.7
 Flask-SQLAlchemy==3.1.1
 greenlet==3.1.1
+gunicorn==23.0.0
 itsdangerous==2.2.0
 Jinja2==3.1.4
 jsonschema==4.23.0

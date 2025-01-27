@@ -4,7 +4,8 @@ from flask import Blueprint, render_template
 main = Blueprint("main", __name__, template_folder="templates/main", static_folder="static")
 
 
-@main.route('/api/v1/')
+
+@main.route('/')
 def home():
     """
        Home page for the streaming service

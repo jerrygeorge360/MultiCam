@@ -1,7 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
-from sqlalchemy import String, Integer, DateTime, ForeignKey, LargeBinary
-from typing import List
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from flask_login import UserMixin
 
 

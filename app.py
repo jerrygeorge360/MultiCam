@@ -1,6 +1,6 @@
 import os
 from datetime import timedelta
-from flask import Flask,jsonify
+from flask import Flask,jsonify,render_template
 from flask_cors import CORS
 from helpers import footer_data
 from models import *
@@ -47,9 +47,14 @@ def load_user(username):
 def unauthorized(error):
     return jsonify({'status': 'failed', 'error': 'You need to be logged in to access this resource'}), 401
 
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(host='0.0.0.0',port=5000)
 
-# TODO : add flask session and flask login
